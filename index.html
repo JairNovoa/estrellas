@@ -157,6 +157,7 @@
   const total = slides.length;
   let current = 0;
   const INTERVAL = 13000;
+  let timer = null;
 
   slides[0].classList.add('active');
 
@@ -232,6 +233,9 @@
     }
   }
 
+  // Avanza un paso y programa el siguiente SOLO si aún no llegamos al final.
+  // Así, al llegar al último slide, el ciclo se detiene por completo
+  // y nunca vuelve a empezar solo.
   function nextSlide(){
     const prev = current;
     current = current + 1;
@@ -243,10 +247,10 @@
     }
   }
 
-  let timer = setTimeout(nextSlide, INTERVAL);
+  timer = setTimeout(nextSlide, INTERVAL);
 
   function restart(){
-    clearTimeout(timer);
+    if(timer) clearTimeout(timer);
     const prev = current;
     current = 0;
     triggerFireworkBurst();
