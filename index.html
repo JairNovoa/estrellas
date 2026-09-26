@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Gabyta</title>
+<style>
+  :root {
+    box-sizing: border-box;
+  }
+  * { box-sizing: inherit; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    filter: brightness(0.15) saturate(0.7);
+    transition: opacity 3.2s ease-in-out, filter 3.6s ease-in-out;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    filter: brightness(1.15) saturate(1.1);
+    pointer-events: auto;
+  }
+
+  .slide.final {
+    background: radial-gradient(ellipse at center, #0d1a3a 0%, #05070f 75%);
+    align-items: center;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.05) 100%);
+  }
+
+  .caption {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 30px 8vh 30px;
+    text-align: center;
+    color: #fdf6e3;
+    font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+    line-height: 1.5;
+    text-shadow:
+      0 0 12px rgba(0,0,0,0.9),
+      0 0 24px rgba(0,0,0,0.7),
+      0 2px 4px rgba(0,0,0,0.9);
+    letter-spacing: 0.3px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 2.4s ease-in-out 0.6s, transform 2.4s ease-in-out 0.6s;
+  }
+
+  .slide.active .caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .final .caption {
+    font-size: clamp(1.4rem, 3.4vw, 2.4rem);
+    color: #ffe9a8;
+    text-shadow:
+      0 0 18px rgba(255, 200, 100, 0.55),
+      0 0 30px rgba(0,0,0,0.85);
+    padding-bottom: 0;
+  }
+
+  .kiss {
+    display: block;
+    margin-top: 18px;
+    font-size: 2.4rem;
+  }
+
+  .glow-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(circle at 50% 60%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.0) 100%);
+    opacity: 0;
+    transition: opacity 2.8s ease-in-out;
+    pointer-events: none;
+  }
+
+  .slide.active .glow-veil {
+    opacity: 1;
+    animation: pulseGlow 15s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%   { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 100%); }
+    30%  { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 60%); }
+    100% { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 100%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <div class="slide" style="background-image:url('fugaz.jpg');" data-index="0">
+    <div class="glow-veil"></div>
+    <div class="overlay"></div>
+    <p class="caption">Hay millones de estrellas que no son estrellas y que nos regalan una luz fugaz.</p>
+  </div>
+
+  <div class="slide" style="background-image:url('estrella.jpg');" data-index="1">
+    <div class="glow-veil"></div>
+    <div class="overlay"></div>
+    <p class="caption">Hay millones de estrellas que lo están dando todo, que han brillado con todo durante millones de años, sin saber que su lucha está perdida.</p>
+  </div>
+
+  <div class="slide" style="background-image:url('supernova.jpg');" data-index="2">
+    <div class="glow-veil"></div>
+    <div class="overlay"></div>
+    <p class="caption">Hay millones de estrellas que ya lo dieron todo durante millones de años, pero que dejaron reminiscencias, de las cuales nacerán millones de estrellitas bebés.</p>
+  </div>
+
+  <div class="slide" style="background-image:url('agujero.jpg');" data-index="3">
+    <div class="glow-veil"></div>
+    <div class="overlay"></div>
+    <p class="caption">Hay millones de estrellas que ya lo dieron todo durante millones de años y se apagaron para siempre.</p>
+  </div>
+
+  <div class="slide" style="background-image:url('gabyta.jpg');" data-index="4">
+    <div class="glow-veil"></div>
+    <div class="overlay"></div>
+    <p class="caption">Pero solamente hay una estrellita en todo el universo cuya luz brillará para siempre.</p>
+  </div>
+
+  <div class="slide final" data-index="5">
+    <div class="glow-veil"></div>
+    <p class="caption">¡Que tengas una bonita semana Beibicita Guapa!<span class="kiss">😘</span></p>
+  </div>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+  }
+
+  showSlide(current);
+
+  setInterval(() => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }, 15000);
+</script>
+
+</body>
+</html>
