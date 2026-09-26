@@ -234,22 +234,25 @@
 
   function nextSlide(){
     const prev = current;
-    current = (current + 1) % total;
+    current = current + 1;
     triggerFireworkBurst();
     slides[prev].classList.remove('active');
     slides[current].classList.add('active');
+    if(current < total - 1){
+      timer = setTimeout(nextSlide, INTERVAL);
+    }
   }
 
-  let timer = setInterval(nextSlide, INTERVAL);
+  let timer = setTimeout(nextSlide, INTERVAL);
 
   function restart(){
-    clearInterval(timer);
+    clearTimeout(timer);
     const prev = current;
     current = 0;
     triggerFireworkBurst();
     slides[prev].classList.remove('active');
     slides[current].classList.add('active');
-    timer = setInterval(nextSlide, INTERVAL);
+    timer = setTimeout(nextSlide, INTERVAL);
   }
 
   document.getElementById('replayBtn').addEventListener('click', restart);
