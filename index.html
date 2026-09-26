@@ -2,177 +2,250 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para Gabyta</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¡Hooola Gabyta Preciosa!</title>
 <style>
-  :root {
-    box-sizing: border-box;
+  :root{ color-scheme: dark; }
+  html, body{
+    margin:0; padding:0;
+    width:100%; height:100%;
+    background:#000;
+    overflow:hidden;
+    font-family: 'Segoe UI', Verdana, Arial, sans-serif;
   }
-  * { box-sizing: inherit; margin: 0; padding: 0; }
-
-  html, body {
-    width: 100%;
-    height: 100%;
-    background: #000;
-    overflow: hidden;
-    font-family: 'Georgia', 'Times New Roman', serif;
-  }
-
-  .stage {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+  .slide{
+    position:absolute;
+    inset:0;
+    width:100%; height:100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0;
-    filter: brightness(0.15) saturate(0.7);
-    transition: opacity 3.2s ease-in-out, filter 3.6s ease-in-out;
-    pointer-events: none;
+    opacity:0;
+    transform: scale(1.05);
+    transition: opacity 1.6s ease-in-out, transform 13s linear;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
   }
-
-  .slide.active {
-    opacity: 1;
-    filter: brightness(1.15) saturate(1.1);
-    pointer-events: auto;
+  .slide.active{
+    opacity:1;
+    transform: scale(1.0);
+    z-index:2;
   }
-
-  .slide.final {
-    background: radial-gradient(ellipse at center, #0d1a3a 0%, #05070f 75%);
-    align-items: center;
+  .slide.final{
+    background: radial-gradient(ellipse at center, #1a1440 0%, #05030f 70%, #000000 100%);
+    align-items:center;
   }
-
-  .overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.05) 100%);
+  .caption-wrap{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding: 0 5%;
+    box-sizing:border-box;
+    margin-bottom: 8%;
   }
-
-  .caption {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
-    padding: 0 30px 8vh 30px;
-    text-align: center;
-    color: #fdf6e3;
-    font-size: clamp(1.1rem, 2.6vw, 1.8rem);
-    line-height: 1.5;
+  .slide.final .caption-wrap{ margin-bottom:0; }
+  .caption{
+    max-width: 900px;
+    text-align:center;
+    color:#ffffff;
+    font-size: clamp(1.1rem, 2.6vw, 1.9rem);
+    line-height:1.5;
+    font-weight:600;
+    padding: 18px 28px;
+    border-radius: 18px;
+    background: rgba(0,0,0,0.45);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
     text-shadow:
-      0 0 12px rgba(0,0,0,0.9),
-      0 0 24px rgba(0,0,0,0.7),
+      0 0 8px rgba(0,0,0,0.9),
+      0 0 18px rgba(0,0,0,0.7),
       0 2px 4px rgba(0,0,0,0.9);
-    letter-spacing: 0.3px;
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 2.4s ease-in-out 0.6s, transform 2.4s ease-in-out 0.6s;
+    box-shadow: 0 0 40px rgba(0,0,0,0.3);
+    opacity:0;
+    transform: translateY(20px);
+    transition: opacity 1.4s ease 0.4s, transform 1.4s ease 0.4s;
   }
-
-  .slide.active .caption {
-    opacity: 1;
+  .slide.active .caption{ opacity:1; transform: translateY(0); }
+  .slide.final .caption{
+    font-size: clamp(1.4rem, 3.4vw, 2.4rem);
+    background: rgba(10,5,30,0.5);
+  }
+  .kiss{ display:inline-block; margin-left:8px; }
+  .replay-btn{
+    margin-top: 28px;
+    display:inline-block;
+    padding: 12px 28px;
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    font-weight:600;
+    color:#ffffff;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 999px;
+    cursor:pointer;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+  .replay-btn:hover{
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+  .replay-btn:active{
     transform: translateY(0);
   }
-
-  .final .caption {
-    font-size: clamp(1.4rem, 3.4vw, 2.4rem);
-    color: #ffe9a8;
-    text-shadow:
-      0 0 18px rgba(255, 200, 100, 0.55),
-      0 0 30px rgba(0,0,0,0.85);
-    padding-bottom: 0;
+  .final-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
-
-  .kiss {
-    display: block;
-    margin-top: 18px;
-    font-size: 2.4rem;
+  canvas#fx{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    z-index:5;
+    pointer-events:none;
   }
-
-  .glow-veil {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: radial-gradient(circle at 50% 60%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.0) 100%);
-    opacity: 0;
-    transition: opacity 2.8s ease-in-out;
-    pointer-events: none;
-  }
-
-  .slide.active .glow-veil {
-    opacity: 1;
-    animation: pulseGlow 15s ease-in-out infinite;
-  }
-
-  @keyframes pulseGlow {
-    0%   { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 100%); }
-    30%  { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 60%); }
-    100% { background: radial-gradient(circle at 50% 55%, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 100%); }
-  }
+  .stars-bg{ position:absolute; inset:0; z-index:0; background:#000; }
 </style>
 </head>
 <body>
 
-<div class="stage">
+<div class="stars-bg"></div>
 
-  <div class="slide" style="background-image:url('fugaz.jpg');" data-index="0">
-    <div class="glow-veil"></div>
-    <div class="overlay"></div>
-    <p class="caption">Hay millones de estrellas que no son estrellas y que nos regalan una luz fugaz.</p>
-  </div>
-
-  <div class="slide" style="background-image:url('estrella.jpg');" data-index="1">
-    <div class="glow-veil"></div>
-    <div class="overlay"></div>
-    <p class="caption">Hay millones de estrellas que lo están dando todo, que han brillado con todo durante millones de años, sin saber que su lucha está perdida.</p>
-  </div>
-
-  <div class="slide" style="background-image:url('supernova.jpg');" data-index="2">
-    <div class="glow-veil"></div>
-    <div class="overlay"></div>
-    <p class="caption">Hay millones de estrellas que ya lo dieron todo durante millones de años, pero que dejaron reminiscencias, de las cuales nacerán millones de estrellitas bebés.</p>
-  </div>
-
-  <div class="slide" style="background-image:url('agujero.jpg');" data-index="3">
-    <div class="glow-veil"></div>
-    <div class="overlay"></div>
-    <p class="caption">Hay millones de estrellas que ya lo dieron todo durante millones de años y se apagaron para siempre.</p>
-  </div>
-
-  <div class="slide" style="background-image:url('gabyta.jpg');" data-index="4">
-    <div class="glow-veil"></div>
-    <div class="overlay"></div>
-    <p class="caption">Pero solamente hay una estrellita en todo el universo cuya luz brillará para siempre.</p>
-  </div>
-
-  <div class="slide final" data-index="5">
-    <div class="glow-veil"></div>
-    <p class="caption">¡Que tengas una bonita semana Beibicita Guapa!<span class="kiss">😘</span></p>
-  </div>
-
+<div class="slide" id="slide0" style="background-image:url('fugaz.png');">
+  <div class="caption-wrap"><div class="caption">hay millones de estrellas que no son estrellas y que nos regalan una luz fugaz</div></div>
 </div>
 
-<script>
-  const slides = document.querySelectorAll('.slide');
-  let current = 0;
+<div class="slide" id="slide1" style="background-image:url('estrella.png');">
+  <div class="caption-wrap"><div class="caption">hay millones de estrellas que lo están dando todo, que han brillado con todo durante millones de años, sin saber que su lucha está perdida</div></div>
+</div>
 
-  function showSlide(i) {
-    slides.forEach(s => s.classList.remove('active'));
-    slides[i].classList.add('active');
+<div class="slide" id="slide2" style="background-image:url('supernova.png');">
+  <div class="caption-wrap"><div class="caption">hay millones de estrellas que ya lo dieron todo durante millones de años pero que dejaron reminiscencias, de las cuales nacerán millones de estrellitas bebés</div></div>
+</div>
+
+<div class="slide" id="slide3" style="background-image:url('agujero.png');">
+  <div class="caption-wrap"><div class="caption">hay millones de estrellas que ya lo dieron todo durante millones de años y se apagaron para siempre</div></div>
+</div>
+
+<div class="slide" id="slide4" style="background-image:url('gabyta.jpg');">
+  <div class="caption-wrap"><div class="caption">pero solamente hay una estrellita en todo el universo cuya luz brillará para siempre</div></div>
+</div>
+
+<div class="slide final" id="slide5">
+  <div class="caption-wrap">
+    <div class="final-inner">
+      <div class="caption">¡Que tengas una bonita semana Beibicita Guapa! <br><span class="kiss">😘</span></div>
+      <button class="replay-btn" id="replayBtn">Ver otra vez ✨</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="fx"></canvas>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+  const INTERVAL = 13000;
+
+  slides[0].classList.add('active');
+
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const colors = ['#ff595e','#ffca3a','#8ac926','#1982c4','#6a4c93','#ff924c','#f15bb5','#00f5d4'];
+
+  function spawnFirework(cx, cy){
+    const particles = [];
+    const count = 60;
+    for(let i=0;i<count;i++){
+      const angle = (Math.PI*2*i)/count + Math.random()*0.2;
+      const speed = 2 + Math.random()*4;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle)*speed,
+        vy: Math.sin(angle)*speed,
+        life: 1,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        size: 2 + Math.random()*2
+      });
+    }
+    return particles;
   }
 
-  showSlide(current);
+  let allParticles = [];
+  let animating = false;
 
-  setInterval(() => {
-    current = (current + 1) % slides.length;
-    showSlide(current);
-  }, 15000);
+  function triggerFireworkBurst(){
+    allParticles = [];
+    const bursts = 4;
+    for(let b=0; b<bursts; b++){
+      setTimeout(()=>{
+        const cx = canvas.width * (0.25 + Math.random()*0.5);
+        const cy = canvas.height * (0.2 + Math.random()*0.4);
+        allParticles = allParticles.concat(spawnFirework(cx, cy));
+        if(!animating){ animating = true; requestAnimationFrame(animate); }
+      }, b*220);
+    }
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'lighter';
+    let alive = false;
+    allParticles.forEach(p=>{
+      if(p.life <= 0) return;
+      alive = true;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.03;
+      p.life -= 0.014;
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    if(alive){
+      requestAnimationFrame(animate);
+    } else {
+      animating = false;
+      allParticles = [];
+    }
+  }
+
+  function nextSlide(){
+    const prev = current;
+    current = (current + 1) % total;
+    triggerFireworkBurst();
+    slides[prev].classList.remove('active');
+    slides[current].classList.add('active');
+  }
+
+  let timer = setInterval(nextSlide, INTERVAL);
+
+  function restart(){
+    clearInterval(timer);
+    const prev = current;
+    current = 0;
+    triggerFireworkBurst();
+    slides[prev].classList.remove('active');
+    slides[current].classList.add('active');
+    timer = setInterval(nextSlide, INTERVAL);
+  }
+
+  document.getElementById('replayBtn').addEventListener('click', restart);
+})();
 </script>
 
 </body>
